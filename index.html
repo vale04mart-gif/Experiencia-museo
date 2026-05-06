@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Museums Experience | CDMX</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Bebas+Neue&display=swap" rel="stylesheet">
+
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;}
+        html { scroll-behavior: smooth; }
+
+        body{
+            font-family:'Poppins', sans-serif;
+            color:white;
+            overflow-x:hidden;
+            background: #000;
+        }
+
+        @keyframes backgroundAnim{
+            0%{background-position:0% 50%;}
+            50%{background-position:100% 50%;}
+            100%{background-position:0% 50%;}
+        }
+
+        /* HOME */
+        #home{
+            height:100vh;
+            display:flex;
+            flex-direction:column;
+            justify-content:center;
+            align-items:center;
+            text-align:center;
+            background: linear-gradient(270deg,#00c6ff,#0072ff,#001f4d);
+            background-size:600% 600%;
+            animation:backgroundAnim 8s infinite;
+        }
+
+        h1{ font-family:'Bebas Neue'; font-size:100px; text-shadow:0 0 25px #00f0ff; letter-spacing: 5px; }
+        .tagline{ font-size:24px; margin:20px; font-weight: 300; }
+
+        /* BUTTONS */
+        .buttons{display:flex; gap:30px;}
+        button{
+            padding:18px 45px; border:none; border-radius:30px;
+            cursor:pointer; font-size:18px; font-weight:bold;
+            text-transform: uppercase; transition:.3s;
+        }
+        button:hover{ transform:scale(1.1); box-shadow:0 0 30px rgba(255,255,255,0.4); }
+        .ripley-btn{background:#ff7b00; color: white;}
+        .cera-btn{background:#00bfff; color: white;}
+        .more-btn{background: white; color: black; margin-top: 20px;}
+        .back{margin:40px auto; display: block; background: rgba(255,255,255,0.2); color: white;}
+
+        /* SECTIONS */
+        .section{
+            display:none; padding:60px 20px; min-height:100vh;
+            background-size:600% 600%; animation:backgroundAnim 12s infinite;
+        }
+        #ripley{background: linear-gradient(270deg,#ff7b00,#912200,#1a0000);}
+        #cera{background: linear-gradient(270deg,#00bfff,#0044ff,#000033);}
+
+        h2{ text-align:center; font-family:'Bebas Neue'; font-size:75px; margin-bottom:50px; }
+
+        /* CARDS */
+        .item-container { max-width: 1100px; margin: 0 auto; }
+        .item{
+            display:flex; align-items:center; gap: 40px; margin:50px 0;
+            padding:35px; background:rgba(255,255,255,0.08);
+            backdrop-filter:blur(15px); border-radius:25px;
+            border: 1px solid rgba(255,255,255,0.1); transition:.4s ease;
+        }
+        .item:hover{ transform:translateY(-10px); background:rgba(255,255,255,0.15); }
+        .item:nth-child(even){flex-direction:row-reverse;}
+
+        .item img{
+            width:300px; height:400px; object-fit: cover;
+            border-radius:20px; cursor:pointer; transition:.4s;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+        }
+
+        .text{ flex: 1; }
+        .text h4 { font-family: 'Bebas Neue'; font-size: 36px; margin-bottom: 15px; color: #00f0ff; }
+        .ripley .text h4 { color: #ff7b00; }
+        .text p { font-size:16px; line-height:1.7; color: rgba(255,255,255,0.9); text-align: justify; }
+
+        /* MODALS */
+        .modal, #visor{
+            position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(0,0,0,0.92); display:none;
+            justify-content:center; align-items:center; z-index: 1000;
+        }
+        .modal-content{
+            background: #111; padding:40px; border-radius:25px;
+            width:95%; max-width:600px; text-align: center;
+            max-height: 90vh; overflow-y: auto; border: 1px solid #333;
+        }
+        .modal-content video { width: 100%; border-radius: 15px; margin: 20px 0; border: 2px solid #444; }
+        .map-container { width: 100%; height: 250px; margin-top: 20px; border-radius: 15px; overflow: hidden; border: 1px solid #444; }
+        #visor img{ max-width:85%; max-height:80%; border-radius:15px; border: 2px solid white; }
+        .close-btn { margin-top: 20px; background: #ff3c00; padding: 12px 30px; color: white; border-radius: 30px; cursor: pointer; border: none; font-weight: bold;}
+
+        /* FLOATING INFO BUTTON */
+        #infoBtn{
+            position:fixed; bottom:30px; right:30px; background:#00f0ff;
+            width:65px; height:65px; border-radius:50%; display:flex;
+            justify-content:center; align-items:center; cursor:pointer; z-index: 500;
+            box-shadow: 0 0 20px rgba(0,240,255,0.5);
+        }
+    </style>
+</head>
+<body>
+
+<section id="home">
+    <h1>MUSEUMS</h1>
+    <p class="tagline">Where reality surpasses fiction.
+       <br> 🎭 Do you dare to meet him? </br>
+    </p>
+    <div class="buttons">
+        <button class="ripley-btn" onclick="showSection('ripley')">Ripley's</button>
+        <button class="cera-btn" onclick="showSection('cera')">Wax Museum</button>
+    </div>
+</section>
+
+<!-- RIPLEY SECTION -->
+<section id="ripley" class="section ripley">
+    <h2>Collection of the Incredible</h2>
+    <div class="item-container" id="ripleyList"></div>
+    <div style="text-align: center;">
+        <button class="more-btn" onclick="openModal('ripleyFounderModal')">Learn More</button>
+        <button class="back" onclick="backHome()">Go Back</button>
+    </div>
+</section>
+
+<!-- WAX SECTION -->
+<section id="cera" class="section">
+    <h2>Gallery of Icons</h2>
+    <div class="item-container" id="ceraList"></div>
+    <div style="text-align: center;">
+        <button class="more-btn" onclick="openModal('ceraFounderModal')">Learn More</button>
+        <button class="back" onclick="backHome()">Go Back</button>
+    </div>
+</section>
+
+<!-- FOUNDER MODALS -->
+<div id="ripleyFounderModal" class="modal">
+    <div class="modal-content">
+        <h3>🌀 Robert Ripley's Legacy</h3>
+        <p>Robert L. Ripley was a cartoonist and explorer who traveled the globe to find the bizarre. His collection is a tribute to human curiosity.</p>
+        <video src="fondo.mp4" controls></video>
+        <button class="close-btn" onclick="closeModal('ripleyFounderModal')">Close</button>
+    </div>
+</div>
+
+<div id="ceraFounderModal" class="modal">
+    <div class="modal-content">
+        <h3>🏛️ History of the Wax Museum</h3>
+        <p>Founded by José Barbosa in 1979, this legendary mansion houses over 230 hyper-realistic figures across various themed rooms.</p>
+        <video src="fondo3.mp4" controls></video>
+        <button class="close-btn" onclick="closeModal('ceraFounderModal')">Close</button>
+    </div>
+</div>
+
+<!-- IMAGE VIEWER -->
+<div id="visor" onclick="this.style.display='none'">
+    <img id="visorImg">
+</div>
+
+<!-- FLOATING INFO (MAP & TICKETS) -->
+<div id="infoBtn" onclick="openModal('infoModal')">
+    <i class="fas fa-map-marked-alt" style="color: black; font-size: 26px;"></i>
+</div>
+
+<div id="infoModal" class="modal">
+    <div class="modal-content">
+        <h3>🎟️ Visitor's Information</h3>
+        <hr style="margin: 15px 0; border: 0; border-top: 1px solid #444;">
+        
+        <div style="text-align: left; margin-bottom: 20px;">
+            <p><strong>📍 Address:</strong> Londres 6, Juarez, Cuauhtémoc, 06600 CDMX.</p>
+            <p><strong>📞 Reservations:</strong> +52 55 5546 7670</p>
+            <p><strong>💵 Tickets:</strong> $170 MXN (Single) / $280 MXN (Combo)</p>
+        </div>
+
+        <!-- GOOGLE MAPS INTEGRATION -->
+        <div class="map-container">
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.531070566418!2d-99.1537243!3d19.4326588!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff3462699e19%3A0xc3b95a89811c79e7!2sMuseo%20de%20Cera!5e0!3m2!1sen!2smx!4v1715000000000!5m2!1sen!2smx" 
+                width="100%" 
+                height="100%" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+
+        <button class="close-btn" onclick="closeModal('infoModal')">Close</button>
+    </div>
+</div>
+
+<script>
+    const dataRipley = [
+        { 
+            img: "Imgs/ripley1.jpeg", 
+            title: "Wooden Ferrari", 
+            desc: "This masterpiece is a 1:1 scale replica of a Ferrari F50, hand-carved entirely from Lebanese cedar wood. Weighing nearly 2,000 lbs, it isn't just a statue—it's a functional boat equipped with an engine, allowing it to cruise through the canals of Venice. It took artist Livio De Marchi five months of daily carving to complete this marvel of craftsmanship." 
+        },
+        { 
+            img: "Imgs/ripley2.jpeg", 
+            title: "The Wolpertinger", 
+            desc: "A legendary hybrid creature from the Alpine forests of Bavaria. This taxidermy curiosity combines the body of a squirrel, the antlers of a deer, and the wings of a duck. While folklore says they only appear to beautiful people, Robert Ripley acquired this specimen to showcase how local legends create 'monsters' that captivate the human imagination for generations." 
+        },
+        { 
+            img: "Imgs/ripley3.jpeg", 
+            title: "Robert Wadlow", 
+            desc: "Known as the 'Gentle Giant', Robert Wadlow remains the tallest human ever recorded in history, reaching a height of 8 feet 11.1 inches (2.72 m). This wax sculpture is an exact 1:1 anatomical replica. Beside him, you can see a replica of his size 37AA shoes; he required a massive 8,000 calories a day just to sustain his energy levels during his travels." 
+        },
+        { 
+            img: "Imgs/ripley4.jpeg", 
+            title: "Medieval Torture", 
+            desc: "A somber collection of authentic and replica devices used during the Middle Ages. Featured here is the 'Iron Maiden' and the 'Breaking Wheel', designed to extract confessions or deliver punishment. This exhibit serves as a historical reminder of the extreme lengths humanity has gone to in the name of justice and social control across different eras." 
+        },
+        { 
+            img: "Imgs/ripley5.jpeg", 
+            title: "Nature's Curiosities", 
+            desc: "Robert Ripley was obsessed with biological anomalies. This section features rare taxidermy specimens, including a two-headed calf and a five-legged pig. These are real genetic mutations preserved to demonstrate that nature often produces variations far more bizarre than any fictional creature. It is one of the museum's most photographed and debated galleries." 
+        }
+    ];
+
+    const dataCera = [
+        { 
+            img: "Imgs/cera1.jpeg", 
+            title: "Claudia Sheinbaum", 
+            desc: "Standing in the 'Hall of Leaders', this figure represents the first female President of Mexico. Every detail, from the presidential sash to the expression of leadership, was meticulously sculpted over six months. The wax artists used high-resolution photography to capture the skin texture and hair color, ensuring a lifelike presence that reflects a historic turning point in Mexican politics." 
+        },
+        { 
+            img: "Imgs/cera2.jpeg", 
+            title: "Spiritual Icons", 
+            desc: "A peaceful gallery housing the world's most influential spiritual figures. The centerpiece is Pope John Paul II, whose figure captures his gentle smile and trademark vestments. This area is designed for reflection, showcasing leaders like the Dalai Lama and Mother Teresa, whose lives were dedicated to peace, using hyper-realistic wax techniques to honor their global legacy." 
+        },
+        { 
+            img: "Imgs/cera3.jpeg", 
+            title: "Luisito Comunica", 
+            desc: "Representing modern digital culture, the 'Rey Palomo' figure captures Mexico's most famous travel YouTuber. Dressed in his characteristic casual travel gear and holding a camera, this sculpture was made in collaboration with Luisito himself to ensure the hair style and accessories were authentic. It serves as a bridge between traditional art and the new era of social media influence." 
+        },
+        { 
+            img: "Imgs/cera4.jpeg", 
+            title: "Albert Einstein", 
+            desc: "The Nobel Prize-winning physicist is shown in his private study, surrounded by his chalkboard equations. The artists focused heavily on Einstein's iconic messy hair and deep-set eyes to convey his profound intelligence. This exhibit allows visitors to sit 'across' from the man who redefined the universe with the General Theory of Relativity." 
+        },
+        { 
+            img: "Imgs/cera5.jpeg", 
+            title: "Steve Jobs", 
+            desc: "A tribute to the Apple visionary who revolutionized the smartphone industry. Dressed in his iconic black turtleneck, blue jeans, and New Balance sneakers, the figure captures his intense focus during a product launch. The hyper-realism extends to the rimless glasses and the subtle graying of his beard, commemorating a man who truly 'Thought Different'." 
+        },
+        { 
+            img: "Imgs/cera6.jpeg", 
+            title: "Leonardo da Vinci", 
+            desc: "The quintessential 'Renaissance Man' stands beside his magnum opus, the Mona Lisa. This historical reconstruction showcases Da Vinci in his later years, with flowing robes and a long beard. The exhibit highlights his dual nature as both a master artist and a visionary engineer, surrounded by sketches of his early flying machines and anatomical studies." 
+        },
+        { 
+            img: "Imgs/cera7.jpeg", 
+            title: "Nayib Bukele", 
+            desc: "One of the most recent additions to the international political wing. This figure represents the President of El Salvador, captured with his distinct modern leadership style. The wax artisans worked to replicate his specific grooming and fashion choices, reflecting the museum's commitment to keeping the collection updated with current global figures who are shaping the 21st century." 
+        }
+    ];
+
+    function renderList(dataArray, containerId) {
+        const container = document.getElementById(containerId);
+        dataArray.forEach(item => {
+            let div = document.createElement("div");
+            div.className = "item";
+            div.innerHTML = `
+                <img src="${item.img}" onclick="openImage('${item.img}')">
+                <div class="text">
+                    <h4>${item.title}</h4>
+                    <p>${item.desc}</p>
+                </div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function showSection(id){
+        document.getElementById("home").style.display="none";
+        document.getElementById("ripley").style.display="none";
+        document.getElementById("cera").style.display="none";
+        document.getElementById(id).style.display="block";
+        window.scrollTo(0,0);
+    }
+
+    function backHome(){
+        document.getElementById("home").style.display="flex";
+        document.getElementById("ripley").style.display="none";
+        document.getElementById("cera").style.display="none";
+    }
+
+    function openImage(src){
+        document.getElementById("visor").style.display="flex";
+        document.getElementById("visorImg").src = src;
+    }
+
+    function openModal(id){ document.getElementById(id).style.display='flex'; }
+    function closeModal(id){ document.getElementById(id).style.display='none'; }
+
+    renderList(dataRipley, "ripleyList");
+    renderList(dataCera, "ceraList");
+</script>
+
+</body>
+</html>
