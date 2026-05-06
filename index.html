@@ -42,7 +42,9 @@
         .tagline{ font-size:24px; margin:20px; font-weight: 300; }
 
         /* BUTTONS */
-        .buttons{display:flex; gap:30px;}
+        .buttons{display:flex; flex-direction: column; align-items: center; gap:20px;}
+        .main-row{display:flex; gap:30px;}
+        
         button{
             padding:18px 45px; border:none; border-radius:30px;
             cursor:pointer; font-size:18px; font-weight:bold;
@@ -51,6 +53,7 @@
         button:hover{ transform:scale(1.1); box-shadow:0 0 30px rgba(255,255,255,0.4); }
         .ripley-btn{background:#ff7b00; color: white;}
         .cera-btn{background:#00bfff; color: white;}
+        .exp-btn{background: rgba(255,255,255,0.2); color: white; border: 1px solid white; backdrop-filter: blur(10px);}
         .more-btn{background: white; color: black; margin-top: 20px;}
         .back{margin:40px auto; display: block; background: rgba(255,255,255,0.2); color: white;}
 
@@ -61,6 +64,7 @@
         }
         #ripley{background: linear-gradient(270deg,#ff7b00,#912200,#1a0000);}
         #cera{background: linear-gradient(270deg,#00bfff,#0044ff,#000033);}
+        #experiencia{background: linear-gradient(270deg,#6a11cb,#2575fc,#000000);}
 
         h2{ text-align:center; font-family:'Bebas Neue'; font-size:75px; margin-bottom:50px; }
 
@@ -119,8 +123,11 @@
        <br> 🎭 Do you dare to meet him? </br>
     </p>
     <div class="buttons">
-        <button class="ripley-btn" onclick="showSection('ripley')">Ripley's</button>
-        <button class="cera-btn" onclick="showSection('cera')">Wax Museum</button>
+        <div class="main-row">
+            <button class="ripley-btn" onclick="showSection('ripley')">Ripley's</button>
+            <button class="cera-btn" onclick="showSection('cera')">Wax Museum</button>
+        </div>
+        <button class="exp-btn" onclick="showSection('experiencia')">Our Experience</button>
     </div>
 </section>
 
@@ -140,6 +147,15 @@
     <div class="item-container" id="ceraList"></div>
     <div style="text-align: center;">
         <button class="more-btn" onclick="openModal('ceraFounderModal')">Learn More</button>
+        <button class="back" onclick="backHome()">Go Back</button>
+    </div>
+</section>
+
+<!-- EXPERIENCE SECTION -->
+<section id="experiencia" class="section">
+    <h2>Our Shared Experience</h2>
+    <div class="item-container" id="expList"></div>
+    <div style="text-align: center;">
         <button class="back" onclick="backHome()">Go Back</button>
     </div>
 </section>
@@ -184,7 +200,6 @@
             <p><strong>💵 Tickets:</strong> $170 MXN (Single) / $280 MXN (Combo)</p>
         </div>
 
-        <!-- GOOGLE MAPS INTEGRATION -->
         <div class="map-container">
             <iframe 
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3762.531070566418!2d-99.1537243!3d19.4326588!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1ff3462699e19%3A0xc3b95a89811c79e7!2sMuseo%20de%20Cera!5e0!3m2!1sen!2smx!4v1715000000000!5m2!1sen!2smx" 
@@ -268,6 +283,29 @@
         }
     ];
 
+    const dataExp = [
+        {
+            img: "Imgs/img1.jpeg",
+            title: "Vale",
+            desc: "My experience at Ripley's Believe It or Not! and the Wax Museum was a lot of fun because I met wax artists who looked very real. At Ripley's, I got a little dizzy from all the illusions and facts I didn't know, like two-headed animals and conjoined twins. That was very strange and incredible to learn about. We also went to the fantasy world, and I really enjoyed the 3D animations they showed us."
+        },
+        {
+            img: "Imgs/img2.jpeg",
+            title: "Luis",
+            desc: "My Experience at the Museo de Cera I visited the Museo de Cera in Mexico City, and it was a fun experience. The wax figures looked very realistic, and I enjoyed taking pictures with them. My favorite part was the horror section because it was exciting and a little scary. Overall, it was a great place to visit."
+        },
+        {
+            img: "Imgs/img3.jpeg",
+            title: "Axel",
+            desc: "Exploring these museums was an eye-opening journey. I was particularly impressed by the technical skill behind the wax sculptures; the skin textures are unbelievably lifelike. In the Ripley's section, the 'Wooden Ferrari' blew my mind—I couldn't believe it actually floats! It's the perfect mix of art, science, and the flat-out bizarre."
+        },
+        {
+            img: "Imgs/img4.jpeg",
+            title: "Victor Manuel",
+            desc: "As a fan of history and pop culture, seeing Steve Jobs and Albert Einstein 'in person' was a dream come true. The museum layout is very immersive, and the staff is quite knowledgeable. I spent a long time in the Medieval section learning about ancient artifacts. It's a fantastic educational yet entertaining trip for anyone in CDMX."
+        }
+    ];
+
     function renderList(dataArray, containerId) {
         const container = document.getElementById(containerId);
         dataArray.forEach(item => {
@@ -288,6 +326,7 @@
         document.getElementById("home").style.display="none";
         document.getElementById("ripley").style.display="none";
         document.getElementById("cera").style.display="none";
+        document.getElementById("experiencia").style.display="none";
         document.getElementById(id).style.display="block";
         window.scrollTo(0,0);
     }
@@ -296,6 +335,7 @@
         document.getElementById("home").style.display="flex";
         document.getElementById("ripley").style.display="none";
         document.getElementById("cera").style.display="none";
+        document.getElementById("experiencia").style.display="none";
     }
 
     function openImage(src){
@@ -308,6 +348,7 @@
 
     renderList(dataRipley, "ripleyList");
     renderList(dataCera, "ceraList");
+    renderList(dataExp, "expList");
 </script>
 
 </body>
